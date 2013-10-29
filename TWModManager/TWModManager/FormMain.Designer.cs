@@ -47,7 +47,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBoxProfiles = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelOrderInfo = new System.Windows.Forms.Label();
             this.findR2TWPathFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.functionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +57,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelModCount = new System.Windows.Forms.Label();
+            this.labelDataPath = new System.Windows.Forms.Label();
             this.groupBoxConvert = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonConvertMovie = new System.Windows.Forms.Button();
@@ -67,6 +67,7 @@
             this.timerLauncher = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBoxProfiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxConvert.SuspendLayout();
@@ -92,7 +93,6 @@
             this.listViewMod.View = System.Windows.Forms.View.Details;
             this.listViewMod.SelectedIndexChanged += new System.EventHandler(this.listViewMod_SelectedIndexChanged);
             this.listViewMod.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewMod_MouseClick);
-            this.listViewMod.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewMod_MouseDoubleClick);
             // 
             // nameColumn
             // 
@@ -153,7 +153,7 @@
             // 
             this.moveDownButton.Enabled = false;
             this.moveDownButton.Font = new System.Drawing.Font("Wingdings", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveDownButton.Location = new System.Drawing.Point(372, 93);
+            this.moveDownButton.Location = new System.Drawing.Point(372, 95);
             this.moveDownButton.Name = "moveDownButton";
             this.moveDownButton.Size = new System.Drawing.Size(29, 27);
             this.moveDownButton.TabIndex = 14;
@@ -168,7 +168,7 @@
             // 
             this.moveUpButton.Enabled = false;
             this.moveUpButton.Font = new System.Drawing.Font("Wingdings", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUpButton.Location = new System.Drawing.Point(372, 65);
+            this.moveUpButton.Location = new System.Drawing.Point(372, 67);
             this.moveUpButton.Name = "moveUpButton";
             this.moveUpButton.Size = new System.Drawing.Size(29, 27);
             this.moveUpButton.TabIndex = 13;
@@ -265,17 +265,17 @@
             this.groupBoxProfiles.TabStop = false;
             this.groupBoxProfiles.Text = "Mod Profiles";
             // 
-            // label4
+            // labelOrderInfo
             // 
-            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label4.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(405, 53);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(186, 79);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "Moving a mod higher up will mean its contents will load over any conflicting file" +
+            this.labelOrderInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelOrderInfo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelOrderInfo.Location = new System.Drawing.Point(405, 55);
+            this.labelOrderInfo.Name = "labelOrderInfo";
+            this.labelOrderInfo.Size = new System.Drawing.Size(186, 79);
+            this.labelOrderInfo.TabIndex = 25;
+            this.labelOrderInfo.Text = "Moving a mod higher up will mean its contents will load over any conflicting file" +
     "s in the mods below it.";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelOrderInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // findR2TWPathFolderBrowserDialog
             // 
@@ -291,7 +291,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(598, 24);
+            this.menuStrip.Size = new System.Drawing.Size(596, 24);
             this.menuStrip.TabIndex = 26;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -347,17 +347,16 @@
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // labelModCount
+            // labelDataPath
             // 
-            this.labelModCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelModCount.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelModCount.Location = new System.Drawing.Point(12, 490);
-            this.labelModCount.Name = "labelModCount";
-            this.labelModCount.Size = new System.Drawing.Size(575, 16);
-            this.labelModCount.TabIndex = 27;
-            this.labelModCount.Text = "C:\\";
-            this.labelModCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelModCount.DoubleClick += new System.EventHandler(this.labelModCount_DoubleClick);
+            this.labelDataPath.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDataPath.Location = new System.Drawing.Point(12, 490);
+            this.labelDataPath.Name = "labelDataPath";
+            this.labelDataPath.Size = new System.Drawing.Size(575, 16);
+            this.labelDataPath.TabIndex = 27;
+            this.labelDataPath.Text = "C:\\";
+            this.labelDataPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelDataPath.DoubleClick += new System.EventHandler(this.labelModCount_DoubleClick);
             // 
             // groupBoxConvert
             // 
@@ -405,6 +404,7 @@
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(575, 23);
             this.progressBar.TabIndex = 29;
+            this.progressBar.Visible = false;
             // 
             // timerLaunch
             // 
@@ -428,17 +428,29 @@
             this.viewContentsToolStripMenuItem.Text = "View Contents";
             this.viewContentsToolStripMenuItem.Click += new System.EventHandler(this.viewContentsToolStripMenuItem_Click);
             // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DarkBlue;
+            this.label4.Location = new System.Drawing.Point(131, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(460, 20);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "Blue = Steam Workshop Mod (Right click Mod for more info)";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(598, 535);
+            this.ClientSize = new System.Drawing.Size(596, 508);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.groupBoxConvert);
-            this.Controls.Add(this.labelModCount);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.labelDataPath);
+            this.Controls.Add(this.labelOrderInfo);
             this.Controls.Add(this.moveUpButton);
             this.Controls.Add(this.moveDownButton);
             this.Controls.Add(this.groupBoxProfiles);
@@ -450,7 +462,6 @@
             this.Controls.Add(this.listViewMod);
             this.Controls.Add(this.menuStrip);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
@@ -488,7 +499,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBoxProfiles;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelOrderInfo;
         private System.Windows.Forms.FolderBrowserDialog findR2TWPathFolderBrowserDialog;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem functionsToolStripMenuItem;
@@ -498,7 +509,7 @@
         private System.Windows.Forms.ToolStripMenuItem revertToVanillaToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.Label labelModCount;
+        private System.Windows.Forms.Label labelDataPath;
         private System.Windows.Forms.GroupBox groupBoxConvert;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button buttonConvertMovie;
@@ -508,6 +519,7 @@
         private System.Windows.Forms.Timer timerLauncher;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem viewContentsToolStripMenuItem;
+        private System.Windows.Forms.Label label4;
     }
 }
 

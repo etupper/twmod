@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TWModManager
 {
-    class PublishedMod
+    public class PublishedMod
     {
         private string _filename;
         private string _fileID;

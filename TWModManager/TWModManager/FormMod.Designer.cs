@@ -68,6 +68,9 @@
             this.labelAuthor.TabIndex = 2;
             this.labelAuthor.Text = "Author";
             this.labelAuthor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAuthor.Click += new System.EventHandler(this.labelAuthor_Click);
+            this.labelAuthor.MouseEnter += new System.EventHandler(this.labelAuthor_MouseEnter);
+            this.labelAuthor.MouseLeave += new System.EventHandler(this.labelAuthor_MouseLeave);
             // 
             // labelDesc
             // 

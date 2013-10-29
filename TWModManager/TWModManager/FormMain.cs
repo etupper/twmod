@@ -63,11 +63,12 @@ namespace TWModManager
 
         private List<Pack> modPacks = new List<Pack>();
         private List<PublishedMod> workshop = new List<PublishedMod>();
+        private bool SteamWorkshopIntegration = true;
 
         public FormMain(string[] args)
         {
             InitializeComponent();
-            this.Size = new Size(604, 538);
+            this.MinimumSize = this.Size;
 
             foreach (string arg in args)
             {
@@ -75,11 +76,24 @@ namespace TWModManager
                 {
                     groupBoxConvert.Enabled = false;
                 }
+                else if (arg == "noWorkshop")
+                {
+                    SteamWorkshopIntegration = false;
+                }
             }
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            if ((labelOrderInfo.Left + labelOrderInfo.Width) > this.Width)
+            {
+                this.Width = labelOrderInfo.Left + labelOrderInfo.Width + 5;
+            }
+            if ((labelDataPath.Top + labelDataPath.Height) > this.Height)
+            {
+                this.Height = labelDataPath.Top + labelDataPath.Height + 5;
+            }
+
             CheckScriptDirectory();
             LoadSettings();
 
@@ -114,7 +128,7 @@ namespace TWModManager
 
             rtw2DataPath = Path.Combine(rtw2Path, "data");
             
-            labelModCount.Text = "Data Path:  " + rtw2DataPath;
+            labelDataPath.Text = "Data Path:  " + rtw2DataPath;
 
             if (Directory.Exists(rtw2DataPath) == false)
             {
@@ -187,7 +201,13 @@ namespace TWModManager
             ListAllMods();
             ColourListViewConflicts();
             LoadProfiles();
-            //FindSubscribedMods();
+
+            if (SteamWorkshopIntegration)
+            {
+                FindSubscribedMods();
+            }
+
+            ColourWorkshopPacks();
         }
         
         private string GetRome2Directory()
@@ -371,6 +391,25 @@ namespace TWModManager
                             FormConflict form = new FormConflict(modPacks[modIndex].Conflicts);
                             form.Text = item.Text + ".pack Conflicts";
                             form.ShowDialog();
+                        }
+                    }
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (SteamWorkshopIntegration)
+                {
+                    ListViewItem item = listViewMod.GetItemAt(e.X, e.Y);
+
+                    if (item != null)
+                    {
+                        foreach (Pack pack in modPacks)
+                        {
+                            if (pack.Name == item.Text)
+                            {
+                                FormMod formMod = new FormMod(pack, workshop);
+                                formMod.ShowDialog();
+                            }
                         }
                     }
                 }
@@ -596,6 +635,21 @@ namespace TWModManager
             }
         }
 
+        private void ColourWorkshopPacks()
+        {
+            foreach (ListViewItem pack in listViewMod.Items)
+            {
+                foreach (PublishedMod mod in workshop)
+                {
+                    if (mod.Filename == pack.Text)
+                    {
+                        //pack.Font = new Font(listViewMod.Font, FontStyle.Italic);
+                        pack.ForeColor = Color.DarkBlue;
+                    }
+                }
+            }
+        }
+
         private void timerForm_Tick(object sender, EventArgs e)
         {
             // Normal Size = 604, 538
@@ -768,17 +822,45 @@ namespace TWModManager
 
             if (File.Exists(profilePath))
             {
-                List<string> profileMods = new List<string>(File.ReadAllLines(profilePath));
+                List<string> loadedMods = new List<string>(File.ReadAllLines(profilePath));
 
-                for (int i = 0; i < listViewMod.Items.Count; i++)
+                List<ProfileMod> profileMods = new List<ProfileMod>();
+
+                for (int i = 0; i < loadedMods.Count; i++)
                 {
-                    if (profileMods.Contains(Path.GetFileNameWithoutExtension(listViewMod.Items[i].Text)))
+                    bool isActive = true;
+
+                    if (loadedMods[i].StartsWith("#") == true)
                     {
-                        listViewMod.Items[i].Checked = true;
+                        isActive = false;
+                        loadedMods[i] = loadedMods[i].Remove(0, 1);
                     }
-                    else
+
+                    ProfileMod pMod = new ProfileMod(loadedMods[i], i, isActive);
+                    profileMods.Add(pMod);
+                }
+
+                for (int i = 0; i < profileMods.Count; i++)
+                {
+                    List<string> listMods = new List<string>();
+
+                    for (int j = 0; j < listViewMod.Items.Count; j++)
                     {
-                        listViewMod.Items[i].Checked = false;
+                        listMods.Add(listViewMod.Items[j].Text);
+                    }
+
+                    if (listMods.Contains(profileMods[i].Filename + ".pack"))
+                    {
+                        int at = listMods.IndexOf(profileMods[i].Filename + ".pack");
+
+                        ListViewItem tempItem = listViewMod.Items[at];
+                        listViewMod.Items.RemoveAt(at);
+                        listViewMod.Items.Insert(i, tempItem);
+
+                        if (profileMods[i].Active == true)
+                        {
+                            listViewMod.Items[i].Checked = true;
+                        }
                     }
                 }
             }
@@ -822,25 +904,40 @@ namespace TWModManager
 
             if (steamPath != null) // If we can't find the steam path easily then don't bother
             {
-                string userdata = Path.Combine(steamPath, "userdata");
-
-                string[] folders = Directory.GetDirectories(userdata);
-
-                foreach (string folder in folders)
+                try
                 {
-                    // This is a Steam user, read their /ugc/publishedfiledetails.vdf
-                    string vdfPath = Path.Combine(folder, "ugc/publishedfiledetails.vdf");
+                    string userdata = Path.Combine(steamPath, "userdata");
 
-                    if (File.Exists(vdfPath))
+                    string[] folders = Directory.GetDirectories(userdata);
+
+                    foreach (string folder in folders)
                     {
-                        ParseVDF(vdfPath);
+                        // This is a Steam user, read their /ugc/publishedfiledetails.vdf
+                        string VDFPath = Path.Combine(folder, "ugc/publishedfiledetails.vdf");
+
+                        if (File.Exists(VDFPath))
+                        {
+                            ParseVDF(VDFPath);
+                        }
+
+                        string[] modFolders = Directory.GetDirectories(folder + "//ugc//referenced");
+
+                        foreach (string modFolder in modFolders)
+                        {
+                            string dataVDFPath = Path.Combine(modFolder, "data.vdf");
+
+                            if (File.Exists(dataVDFPath))
+                            {
+                                ParseDataVDF(dataVDFPath);
+                            }
+                        }
                     }
                 }
-            }
-
-            foreach (PublishedMod pb in workshop)
-            {
-                MessageBox.Show(pb.Filename + "\n" + pb.Description);
+                catch (Exception e)
+                {
+                    MessageBox.Show("[Steam Workshop Error]\n\n" + e.Message, "Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SteamWorkshopIntegration = false;
+                }
             }
         }
 
@@ -864,59 +961,120 @@ namespace TWModManager
 
         private void ParseVDF(string file)
         {
-            string[] lines = File.ReadAllLines(file);
-
-            int modCount = 0;
-
-            for (int i = 0; i < lines.Length; i++)
+            try
             {
-                if (lines[i].StartsWith("\t\"" + modCount + "\"")) // Start of mod
+                string[] lines = File.ReadAllLines(file);
+
+                int modCount = 0;
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].StartsWith("\t\"" + modCount + "\"")) // Start of mod
+                    {
+                        string appID = "";
+                        PublishedMod mod = new PublishedMod();
+
+                        while (lines[i].StartsWith("\t\"" + (modCount + 1) + "\"") == false) // Reached next mod
+                        {
+                            if (lines[i].Contains("publishedfileid"))
+                            {
+                                mod.FileID = lines[i].Replace("\"publishedfileid\"\t\t\"", "");
+                                mod.FileID = mod.FileID.Replace("\"", "");
+                                mod.FileID = mod.FileID.Replace("\t", "");
+                            }
+                            else if (lines[i].Contains("consumerappid"))
+                            {
+                                appID = lines[i].Replace("\"consumerappid\"\t\t\"", "");
+                                appID = appID.Replace("\"", "");
+                                appID = appID.Replace("\t", "");
+                            }
+                            else if (lines[i].Contains("filename"))
+                            {
+                                mod.Filename = lines[i].Replace("\"filename\"\t\t\"", "");
+                                mod.Filename = mod.Filename.Replace("\"", "");
+                                mod.Filename = mod.Filename.Replace("\t", "");
+                                mod.Filename = mod.Filename.Replace("mods/", "");
+                            }
+                            else if (lines[i].Contains("description"))
+                            {
+                                mod.Description = lines[i].Replace("\"description\"\t\t\"", "");
+                                mod.Description = mod.Description.Replace("\"", "");
+                                mod.Description = mod.Description.Replace("\t", "");
+                            }
+                            else if (lines[i].Contains("tags"))
+                            {
+                                mod.Tags = lines[i].Replace("\"tags\"\t\t\"", "");
+                                mod.Tags = mod.Tags.Replace("\"", "");
+                                mod.Tags = mod.Tags.Replace("\t", "");
+                            }
+                            else if (lines[i].Contains("title"))
+                            {
+                                mod.Title = lines[i].Replace("\"title\"\t\t\"", "");
+                                mod.Title = mod.Title.Replace("\"", "");
+                                mod.Title = mod.Title.Replace("\t", "");
+                            }
+                            else if (lines[i].Contains("steamid_owner"))
+                            {
+                                mod.Author = lines[i].Replace("\"steamid_owner\"\t\t\"", "");
+                                mod.Author = mod.Author.Replace("\"", "");
+                                mod.Author = mod.Author.Replace("\t", "");
+                            }
+
+                            if ((i + 1) >= lines.Length)
+                                break;
+
+                            i++;
+                        }
+
+                        modCount++;
+
+                        if (appID.Contains("214950"))
+                        {
+                            workshop.Add(mod);
+                        }
+
+                        i--;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("[Steam Workshop Error]\n\n" + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SteamWorkshopIntegration = false;
+            }
+        }
+
+        private void ParseDataVDF(string file)
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(file);
+
+                int modCount = 0;
+
+                for (int i = 0; i < lines.Length; i++)
                 {
                     string appID = "";
                     PublishedMod mod = new PublishedMod();
 
                     while (lines[i].StartsWith("\t\"" + (modCount + 1) + "\"") == false) // Reached next mod
                     {
-                        if (lines[i].Contains("publishedfileid"))
-                        {
-                            mod.FileID = lines[i].Replace("\"publishedfileid\"\t\t\"", "");
-                            mod.FileID = mod.FileID.Replace("\"", "");
-                            mod.FileID = mod.FileID.Replace("\t", "");
-                        }
-                        else if (lines[i].Contains("consumerappid"))
-                        {
-                            appID = lines[i].Replace("\"consumerappid\"\t\t\"", "");
-                            appID = appID.Replace("\"", "");
-                            appID = appID.Replace("\t", "");
-                        }
-                        else if (lines[i].Contains("filename"))
+                        if (lines[i].Contains("filename"))
                         {
                             mod.Filename = lines[i].Replace("\"filename\"\t\t\"", "");
                             mod.Filename = mod.Filename.Replace("\"", "");
                             mod.Filename = mod.Filename.Replace("\t", "");
                             mod.Filename = mod.Filename.Replace("mods/", "");
                         }
-                        else if (lines[i].Contains("description"))
+                        else if (lines[i].Contains("appID"))
                         {
-                            mod.Description = lines[i].Replace("\"description\"\t\t\"", "");
-                            mod.Description = mod.Description.Replace("\"", "");
-                            mod.Description = mod.Description.Replace("\t", "");
+                            appID = lines[i].Replace("\"appID\"\t\t\"", "");
+                            appID = appID.Replace("\"", "");
+                            appID = appID.Replace("\t", "");
                         }
-                        else if (lines[i].Contains("tags"))
+                        else if (lines[i].Contains("creator"))
                         {
-                            mod.Tags = lines[i].Replace("\"tags\"\t\t\"", "");
-                            mod.Tags = mod.Tags.Replace("\"", "");
-                            mod.Tags = mod.Tags.Replace("\t", "");
-                        }
-                        else if (lines[i].Contains("title"))
-                        {
-                            mod.Title = lines[i].Replace("\"title\"\t\t\"", "");
-                            mod.Title = mod.Title.Replace("\"", "");
-                            mod.Title = mod.Title.Replace("\t", "");
-                        }
-                        else if (lines[i].Contains("steamid_owner"))
-                        {
-                            mod.Author = lines[i].Replace("\"steamid_owner\"\t\t\"", "");
+                            mod.Author = lines[i].Replace("\"creator\"\t\t\"", "");
                             mod.Author = mod.Author.Replace("\"", "");
                             mod.Author = mod.Author.Replace("\t", "");
                         }
@@ -932,10 +1090,16 @@ namespace TWModManager
                     if (appID.Contains("214950"))
                     {
                         workshop.Add(mod);
+                        return;
                     }
 
                     i--;
                 }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("[Steam Workshop Error]\n\n" + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SteamWorkshopIntegration = false;
             }
         }
 
@@ -1033,41 +1197,6 @@ namespace TWModManager
         private void timerLauncher_Tick(object sender, EventArgs e)
         {
             WaitForLauncher();
-        }
-
-        private void listViewMod_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            return;
-
-            ListViewItem item = listViewMod.GetItemAt(e.X, e.Y);
-
-            if (item != null)
-            {
-                ListViewItem.ListViewSubItem subitem = item.GetSubItemAt(e.X, e.Y);
-                if (subitem == item.SubItems[1] && subitem.Text.Length > 0 && subitem.Text != "None")
-                {
-                    // Conflicts was clicked, ignore
-                }
-                else
-                {
-                    int modIndex = -1;
-
-                    for (int i = 0; i < modPacks.Count; i++)
-                    {
-                        if (modPacks[i].Name == item.Text)
-                        {
-                            modIndex = i;
-                            break;
-                        }
-                    }
-
-                    if (modIndex > -1)
-                    {
-                        FormMod formMod = new FormMod(modPacks[modIndex]);
-                        formMod.ShowDialog();
-                    }
-                }
-            }
         }
 
         private void viewContentsToolStripMenuItem_Click(object sender, EventArgs e)

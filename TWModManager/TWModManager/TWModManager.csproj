@@ -69,6 +69,7 @@
       <DependentUpon>FormMod.cs</DependentUpon>
     </Compile>
     <Compile Include="Pack.cs" />
+    <Compile Include="ProfileMod.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishedMod.cs" />

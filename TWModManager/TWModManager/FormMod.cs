@@ -8,22 +8,43 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Diagnostics;
 
 namespace TWModManager
 {
     public partial class FormMod : Form
     {
         private Pack pack;
+        private List<PublishedMod> workshop = new List<PublishedMod>();
+        private int pmIndex = -1;
+        private bool foundAuthor = false;
 
-        public FormMod(Pack _pack)
+        public FormMod(Pack _pack, List<PublishedMod> _workshop)
         {
             InitializeComponent();
             pack = _pack;
+            workshop = _workshop;
         }
 
         private void FormMod_Load(object sender, EventArgs e)
         {
             labelName.Text = Path.GetFileName(pack.FilePath);
+
+            int i = 0;
+
+            foreach (PublishedMod pMod in workshop)
+            {
+                if (pMod.Filename == pack.Name)
+                {
+                    if (!string.IsNullOrEmpty(pMod.Title))
+                    {
+                        labelName.Text = pMod.Title;
+                    }
+
+                    pmIndex = i;
+                }
+                i++;
+            }
 
             string pngPath = Path.GetDirectoryName(pack.FilePath) + "\\" + Path.GetFileNameWithoutExtension(pack.FilePath) + ".png";
 
@@ -32,12 +53,12 @@ namespace TWModManager
                 imgMod.Image = Bitmap.FromFile(pngPath);
             }
 
-
             FileInfo fI = new FileInfo(pack.FilePath);
-            long fileSize = fI.Length / (1024*1024);
+            float fileSize = (float)fI.Length / (float)(1024 * 1024);
 
-            labelDesc.Text = "Filesize: " + fileSize.ToString(".0#") + "mb\n"
-                + "File Count: " + pack.FileList.Count + "\n"
+            labelDesc.Text = "Filename:\n'" + pack.Name + "'\n"
+                + "Filesize: " + fileSize.ToString("N2") + "mb\n"
+                + "Internal File Count: " + pack.FileList.Count + "\n"
                 + "Pack Type: " + pack.PackType.ToString() + "\n"
                 + "Conflicts: " + pack.Conflicts.Count;
         }
@@ -67,10 +88,47 @@ namespace TWModManager
 
         private void FormMod_Shown(object sender, EventArgs e)
         {
-            bool found;
-            string authorName = GetAuthorName("76561197989900707", out found);
-            
-            labelAuthor.Text = "Author: " + authorName;
+            if (pmIndex > -1)
+            {
+                bool found;
+                string authorName = GetAuthorName(workshop[pmIndex].Author, out found);
+
+                if (found)
+                {
+                    labelAuthor.ForeColor = Color.FromKnownColor(KnownColor.HotTrack);
+                    foundAuthor = true;
+                }
+
+                labelAuthor.Text = "Author: " + authorName;
+            }
+            else
+            {
+                labelAuthor.Text = "Author: Unknown";
+            }
+        }
+
+        private void labelAuthor_Click(object sender, EventArgs e)
+        {
+            if (foundAuthor == true)
+            {
+                Process.Start("http://steamcommunity.com/profiles/" + workshop[pmIndex].Author);// + "/myworkshopfiles/?appid=214950");
+            }
+        }
+
+        private void labelAuthor_MouseEnter(object sender, EventArgs e)
+        {
+            if (foundAuthor == true)
+            {
+                labelAuthor.Font = new Font(labelAuthor.Font, FontStyle.Underline);
+            }
+        }
+
+        private void labelAuthor_MouseLeave(object sender, EventArgs e)
+        {
+            if (foundAuthor == true)
+            {
+                labelAuthor.Font = new Font(labelAuthor.Font, FontStyle.Regular);
+            }
         }
     }
 }
