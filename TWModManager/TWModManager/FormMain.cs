@@ -63,7 +63,7 @@ namespace TWModManager
 
         private List<Pack> modPacks = new List<Pack>();
         private List<PublishedMod> workshop = new List<PublishedMod>();
-        private bool SteamWorkshopIntegration = true;
+        private bool SteamWorkshopIntegration = false;
 
         public FormMain(string[] args)
         {
@@ -202,12 +202,12 @@ namespace TWModManager
             ColourListViewConflicts();
             LoadProfiles();
 
-            if (SteamWorkshopIntegration)
+            if (SteamWorkshopIntegration == true)
             {
                 FindSubscribedMods();
+                ColourWorkshopPacks();
+                labelWorkshop.Visible = true;
             }
-
-            ColourWorkshopPacks();
         }
         
         private string GetRome2Directory()
@@ -310,7 +310,7 @@ namespace TWModManager
             return contents;
         }
 
-        public PackHeader ReadHeader(BinaryReader reader)
+        private PackHeader ReadHeader(BinaryReader reader)
         {
             PackHeader header = new PackHeader();
 
@@ -855,11 +855,24 @@ namespace TWModManager
 
                         ListViewItem tempItem = listViewMod.Items[at];
                         listViewMod.Items.RemoveAt(at);
-                        listViewMod.Items.Insert(i, tempItem);
 
-                        if (profileMods[i].Active == true)
+                        if (i > listViewMod.Items.Count)
                         {
-                            listViewMod.Items[i].Checked = true;
+                            listViewMod.Items.Insert(listViewMod.Items.Count, tempItem);
+
+                            if (profileMods[i].Active == true)
+                            {
+                                listViewMod.Items[listViewMod.Items.Count - 1].Checked = true;
+                            }
+                        }
+                        else
+                        {
+                            listViewMod.Items.Insert(i, tempItem);
+
+                            if (profileMods[i].Active == true)
+                            {
+                                listViewMod.Items[i].Checked = true;
+                            }
                         }
                     }
                 }
@@ -1241,7 +1254,7 @@ namespace TWModManager
             }
         }
 
-        private void labelModCount_DoubleClick(object sender, EventArgs e)
+        private void labelDataPath_DoubleClick(object sender, EventArgs e)
         {
             while (findR2TWPathFolderBrowserDialog.ShowDialog() == DialogResult.OK)
             {

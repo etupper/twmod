@@ -67,7 +67,7 @@
             this.timerLauncher = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelWorkshop = new System.Windows.Forms.Label();
             this.groupBoxProfiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxConvert.SuspendLayout();
@@ -356,7 +356,7 @@
             this.labelDataPath.TabIndex = 27;
             this.labelDataPath.Text = "C:\\";
             this.labelDataPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelDataPath.DoubleClick += new System.EventHandler(this.labelModCount_DoubleClick);
+            this.labelDataPath.DoubleClick += new System.EventHandler(this.labelDataPath_DoubleClick);
             // 
             // groupBoxConvert
             // 
@@ -428,16 +428,17 @@
             this.viewContentsToolStripMenuItem.Text = "View Contents";
             this.viewContentsToolStripMenuItem.Click += new System.EventHandler(this.viewContentsToolStripMenuItem_Click);
             // 
-            // label4
+            // labelWorkshop
             // 
-            this.label4.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DarkBlue;
-            this.label4.Location = new System.Drawing.Point(131, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(460, 20);
-            this.label4.TabIndex = 30;
-            this.label4.Text = "Blue = Steam Workshop Mod (Right click Mod for more info)";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.labelWorkshop.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWorkshop.ForeColor = System.Drawing.Color.DarkBlue;
+            this.labelWorkshop.Location = new System.Drawing.Point(131, 27);
+            this.labelWorkshop.Name = "labelWorkshop";
+            this.labelWorkshop.Size = new System.Drawing.Size(460, 20);
+            this.labelWorkshop.TabIndex = 30;
+            this.labelWorkshop.Text = "Blue = Steam Workshop Mod (Right click Mod for more info)";
+            this.labelWorkshop.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.labelWorkshop.Visible = false;
             // 
             // FormMain
             // 
@@ -446,7 +447,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(596, 508);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.labelWorkshop);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.groupBoxConvert);
             this.Controls.Add(this.labelDataPath);
@@ -519,7 +520,7 @@
         private System.Windows.Forms.Timer timerLauncher;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem viewContentsToolStripMenuItem;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelWorkshop;
     }
 }
 
