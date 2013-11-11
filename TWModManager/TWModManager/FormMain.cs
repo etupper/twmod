@@ -352,7 +352,7 @@ namespace TWModManager
             return header;
         }
 
-        public static string ReadZeroTerminatedAscii(BinaryReader reader)
+        private static string ReadZeroTerminatedAscii(BinaryReader reader)
         {
             StringBuilder builder = new StringBuilder();
             byte ch = reader.ReadByte();
@@ -1261,6 +1261,25 @@ namespace TWModManager
                 if (File.Exists(Path.Combine(findR2TWPathFolderBrowserDialog.SelectedPath, "Rome2.exe")))
                 {
                     rtw2Path = findR2TWPathFolderBrowserDialog.SelectedPath;
+                    rtw2DataPath = Path.Combine(rtw2Path, "data");
+
+                    WriteSettings();
+                    break;
+                }
+                MessageBox.Show("Rome2.exe not found in that directory, please try again.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void selectGameDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            findR2TWPathFolderBrowserDialog.SelectedPath = rtw2Path;
+
+            while (findR2TWPathFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (File.Exists(Path.Combine(findR2TWPathFolderBrowserDialog.SelectedPath, "Rome2.exe")))
+                {
+                    rtw2Path = findR2TWPathFolderBrowserDialog.SelectedPath;
+                    rtw2DataPath = Path.Combine(rtw2Path, "data");
 
                     WriteSettings();
                     break;

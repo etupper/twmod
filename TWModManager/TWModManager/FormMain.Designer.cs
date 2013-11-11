@@ -54,6 +54,8 @@
             this.launchGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.revertToVanillaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.selectGameDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -301,6 +303,8 @@
             this.launchGameToolStripMenuItem,
             this.revertToVanillaToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.selectGameDirectoryToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.exitToolStripMenuItem});
             this.functionsToolStripMenuItem.Name = "functionsToolStripMenuItem";
             this.functionsToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
@@ -309,26 +313,38 @@
             // launchGameToolStripMenuItem
             // 
             this.launchGameToolStripMenuItem.Name = "launchGameToolStripMenuItem";
-            this.launchGameToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.launchGameToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.launchGameToolStripMenuItem.Text = "&Launch Game";
             this.launchGameToolStripMenuItem.Click += new System.EventHandler(this.launchGameToolStripMenuItem_Click);
             // 
             // revertToVanillaToolStripMenuItem
             // 
             this.revertToVanillaToolStripMenuItem.Name = "revertToVanillaToolStripMenuItem";
-            this.revertToVanillaToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.revertToVanillaToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.revertToVanillaToolStripMenuItem.Text = "&Revert to Vanilla";
             this.revertToVanillaToolStripMenuItem.Click += new System.EventHandler(this.revertToVanillaToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(156, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
+            // 
+            // selectGameDirectoryToolStripMenuItem
+            // 
+            this.selectGameDirectoryToolStripMenuItem.Name = "selectGameDirectoryToolStripMenuItem";
+            this.selectGameDirectoryToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.selectGameDirectoryToolStripMenuItem.Text = "Set Game Directory";
+            this.selectGameDirectoryToolStripMenuItem.Click += new System.EventHandler(this.selectGameDirectoryToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -521,6 +537,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem viewContentsToolStripMenuItem;
         private System.Windows.Forms.Label labelWorkshop;
+        private System.Windows.Forms.ToolStripMenuItem selectGameDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 
