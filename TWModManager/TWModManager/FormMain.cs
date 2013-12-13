@@ -65,10 +65,15 @@ namespace TWModManager
         private List<PublishedMod> workshop = new List<PublishedMod>();
         private bool SteamWorkshopIntegration = false;
 
+        private int listModHeight;
+        private int listMovieTop;
+        private int listMovieHeight;
+
         public FormMain(string[] args)
         {
             InitializeComponent();
             this.MinimumSize = this.Size;
+            this.MaximumSize = new Size(this.Width, 9999);
 
             foreach (string arg in args)
             {
@@ -81,6 +86,15 @@ namespace TWModManager
                     SteamWorkshopIntegration = false;
                 }
             }
+
+            listModHeight = listViewMod.Height;
+            listMovieTop = listViewMovie.Top;
+            listMovieHeight = listViewMovie.Height;
+
+            labelMod.Top = listViewMod.Top - labelMod.Height;
+            labelWorkshop.Top = listViewMod.Top - labelWorkshop.Height;
+            labelMovie.Top = listViewMovie.Top - labelMovie.Height;
+            labelActivated.Top = listViewMovie.Top - labelActivated.Height;
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -96,39 +110,17 @@ namespace TWModManager
 
             CheckScriptDirectory();
             LoadSettings();
+            AskAboutPath();
 
-            if (String.IsNullOrEmpty(rtw2Path) ||
-                !Directory.Exists(rtw2Path))
+            if (!string.IsNullOrEmpty(rtw2Path))
             {
-                rtw2Path = GetRome2Directory();
-
-                if (String.IsNullOrEmpty(rtw2Path) ||
-                    !Directory.Exists(rtw2Path))
-                {
-                    while (findR2TWPathFolderBrowserDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        if (File.Exists(Path.Combine(findR2TWPathFolderBrowserDialog.SelectedPath, "Rome2.exe")))
-                        {
-                            rtw2Path = findR2TWPathFolderBrowserDialog.SelectedPath;
-
-                            WriteSettings();
-                            break;
-                        }
-                        MessageBox.Show("Rome2.exe not found in that directory, please try again.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-
-                    if (String.IsNullOrEmpty(rtw2Path))
-                    {
-                        MessageBox.Show("Mod Manager can't work without the path to Rome2.exe, exiting!", "Unable to continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Close();
-                        return;
-                    }
-                }
+                rtw2DataPath = Path.Combine(rtw2Path, "data");
+                labelDataPath.Text = "Data Path:  " + rtw2DataPath;
             }
-
-            rtw2DataPath = Path.Combine(rtw2Path, "data");
-            
-            labelDataPath.Text = "Data Path:  " + rtw2DataPath;
+            else
+            {
+                AskAboutPath();
+            }            
 
             if (Directory.Exists(rtw2DataPath) == false)
             {
@@ -207,6 +199,38 @@ namespace TWModManager
                 FindSubscribedMods();
                 ColourWorkshopPacks();
                 labelWorkshop.Visible = true;
+            }
+        }
+
+        private void AskAboutPath()
+        {
+            if (String.IsNullOrEmpty(rtw2Path) ||
+                !Directory.Exists(rtw2Path))
+            {
+                rtw2Path = GetRome2Directory();
+
+                if (String.IsNullOrEmpty(rtw2Path) ||
+                    !Directory.Exists(rtw2Path))
+                {
+                    while (findR2TWPathFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        if (File.Exists(Path.Combine(findR2TWPathFolderBrowserDialog.SelectedPath, "Rome2.exe")))
+                        {
+                            rtw2Path = findR2TWPathFolderBrowserDialog.SelectedPath;
+
+                            WriteSettings();
+                            break;
+                        }
+                        MessageBox.Show("Rome2.exe not found in that directory, please try again.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    if (String.IsNullOrEmpty(rtw2Path))
+                    {
+                        MessageBox.Show("Mod Manager can't work without the path to Rome2.exe, exiting!", "Unable to continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Close();
+                        return;
+                    }
+                }
             }
         }
         
@@ -889,6 +913,8 @@ namespace TWModManager
             using (StreamWriter file = new StreamWriter(settingsFilepath))
             {
                 file.WriteLine("GamePath=" + rtw2Path);
+                file.WriteLine("Size=" + this.Size.Width + "," + this.Size.Height);
+                file.WriteLine("Location=" + this.Location.X + "," + this.Location.Y);
             }
         }
 
@@ -905,6 +931,30 @@ namespace TWModManager
                         if (line.StartsWith("GamePath=") == true)
                         {
                             rtw2Path = StripText(line, "GamePath=");
+                        }
+                        else if (line.StartsWith("Size=") == true)
+                        {
+                            try
+                            {
+                                string size = StripText(line, "Size=");
+                                string[] split = size.Split(',');
+                                this.Size = new Size(int.Parse(split[0]), int.Parse(split[1]));
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+                        else if (line.StartsWith("Location=") == true)
+                        {
+                            try
+                            {
+                                string location = StripText(line, "Location=");
+                                string[] split = location.Split(',');
+                                this.Location = new Point(int.Parse(split[0]), int.Parse(split[1]));
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
                     }
                 }
@@ -1286,6 +1336,23 @@ namespace TWModManager
                 }
                 MessageBox.Show("Rome2.exe not found in that directory, please try again.", "Invalid directory", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            int incr = (this.Size.Height - this.MinimumSize.Height) / 2;
+
+            listViewMod.Height = listModHeight + incr;
+            listViewMovie.Top = listMovieTop + incr;
+            listViewMovie.Height = listMovieHeight + incr;
+
+            labelMovie.Top = listViewMovie.Top - labelMovie.Height;
+            labelActivated.Top = listViewMovie.Top - labelActivated.Height;
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            WriteSettings();
         }
     }
 }

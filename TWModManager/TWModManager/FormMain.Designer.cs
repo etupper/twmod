@@ -43,9 +43,9 @@
             this.listViewMovie = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelMovie = new System.Windows.Forms.Label();
+            this.labelMod = new System.Windows.Forms.Label();
+            this.labelActivated = new System.Windows.Forms.Label();
             this.groupBoxProfiles = new System.Windows.Forms.GroupBox();
             this.labelOrderInfo = new System.Windows.Forms.Label();
             this.findR2TWPathFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -223,35 +223,37 @@
             this.columnHeader2.Text = "Conflicts";
             this.columnHeader2.Width = 131;
             // 
-            // label1
+            // labelMovie
             // 
-            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 259);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(357, 22);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Movie Packs";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelMovie.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelMovie.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMovie.Location = new System.Drawing.Point(12, 259);
+            this.labelMovie.Name = "labelMovie";
+            this.labelMovie.Size = new System.Drawing.Size(357, 22);
+            this.labelMovie.TabIndex = 21;
+            this.labelMovie.Text = "Movie Packs";
+            this.labelMovie.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label2
+            // labelMod
             // 
-            this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(357, 22);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "Mod Packs";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelMod.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMod.Location = new System.Drawing.Point(12, 28);
+            this.labelMod.Name = "labelMod";
+            this.labelMod.Size = new System.Drawing.Size(357, 22);
+            this.labelMod.TabIndex = 22;
+            this.labelMod.Text = "Mod Packs";
+            this.labelMod.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label3
+            // labelActivated
             // 
-            this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(130, 259);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(140, 22);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "(Always activated)";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelActivated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelActivated.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelActivated.Location = new System.Drawing.Point(130, 259);
+            this.labelActivated.Name = "labelActivated";
+            this.labelActivated.Size = new System.Drawing.Size(140, 22);
+            this.labelActivated.TabIndex = 23;
+            this.labelActivated.Text = "(Always activated)";
+            this.labelActivated.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupBoxProfiles
             // 
@@ -365,10 +367,11 @@
             // 
             // labelDataPath
             // 
+            this.labelDataPath.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.labelDataPath.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDataPath.Location = new System.Drawing.Point(12, 490);
+            this.labelDataPath.Location = new System.Drawing.Point(0, 492);
             this.labelDataPath.Name = "labelDataPath";
-            this.labelDataPath.Size = new System.Drawing.Size(575, 16);
+            this.labelDataPath.Size = new System.Drawing.Size(596, 16);
             this.labelDataPath.TabIndex = 27;
             this.labelDataPath.Text = "C:\\";
             this.labelDataPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -471,9 +474,9 @@
             this.Controls.Add(this.moveUpButton);
             this.Controls.Add(this.moveDownButton);
             this.Controls.Add(this.groupBoxProfiles);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelActivated);
+            this.Controls.Add(this.labelMod);
+            this.Controls.Add(this.labelMovie);
             this.Controls.Add(this.listViewMovie);
             this.Controls.Add(this.launchGameButton);
             this.Controls.Add(this.listViewMod);
@@ -485,7 +488,9 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Total War: Rome 2 - Mod Manager";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.groupBoxProfiles.ResumeLayout(false);
             this.groupBoxProfiles.PerformLayout();
             this.menuStrip.ResumeLayout(false);
@@ -512,9 +517,9 @@
         private System.Windows.Forms.ListView listViewMovie;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelMovie;
+        private System.Windows.Forms.Label labelMod;
+        private System.Windows.Forms.Label labelActivated;
         private System.Windows.Forms.GroupBox groupBoxProfiles;
         private System.Windows.Forms.Label labelOrderInfo;
         private System.Windows.Forms.FolderBrowserDialog findR2TWPathFolderBrowserDialog;
