@@ -92,9 +92,12 @@ namespace TWModManager
             listMovieHeight = listViewMovie.Height;
 
             labelMod.Top = listViewMod.Top - labelMod.Height;
-            labelWorkshop.Top = listViewMod.Top - labelWorkshop.Height;
+            labelWorkshop.Top = listViewMod.Top - labelWorkshop.Height - 5;
             labelMovie.Top = listViewMovie.Top - labelMovie.Height;
             labelActivated.Top = listViewMovie.Top - labelActivated.Height;
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+            LoadSettings();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -109,7 +112,6 @@ namespace TWModManager
             }
 
             CheckScriptDirectory();
-            LoadSettings();
             AskAboutPath();
 
             if (!string.IsNullOrEmpty(rtw2Path))
@@ -136,6 +138,7 @@ namespace TWModManager
 
             foreach (string file in foundPacks)
             {
+                File.SetAttributes(file, FileAttributes.Normal);
                 string filePath = file;
                 PackType packType = GetPackType(file);
                 bool isVanilla = IsPackVanilla(file, packType);
@@ -667,8 +670,21 @@ namespace TWModManager
                 {
                     if (mod.Filename == pack.Text)
                     {
-                        //pack.Font = new Font(listViewMod.Font, FontStyle.Italic);
                         pack.ForeColor = Color.DarkBlue;
+                    }
+                }
+            }
+        }
+
+        private void DeColourWorkshopPacks()
+        {
+            foreach (ListViewItem pack in listViewMod.Items)
+            {
+                foreach (PublishedMod mod in workshop)
+                {
+                    if (mod.Filename == pack.Text)
+                    {
+                        pack.ForeColor = Color.FromKnownColor(KnownColor.WindowText);
                     }
                 }
             }
@@ -914,7 +930,7 @@ namespace TWModManager
             {
                 file.WriteLine("GamePath=" + rtw2Path);
                 file.WriteLine("Size=" + this.Size.Width + "," + this.Size.Height);
-                file.WriteLine("Location=" + this.Location.X + "," + this.Location.Y);
+                file.WriteLine("SteamWorkshop=" + SteamWorkshopIntegration.ToString());
             }
         }
 
@@ -944,13 +960,12 @@ namespace TWModManager
                             {
                             }
                         }
-                        else if (line.StartsWith("Location=") == true)
+                        else if (line.StartsWith("SteamWorkshop=") == true)
                         {
                             try
                             {
-                                string location = StripText(line, "Location=");
-                                string[] split = location.Split(',');
-                                this.Location = new Point(int.Parse(split[0]), int.Parse(split[1]));
+                                SteamWorkshopIntegration = bool.Parse(StripText(line, "SteamWorkshop="));
+                                steamWorkshopIntegrationBETAToolStripMenuItem.Checked = SteamWorkshopIntegration;
                             }
                             catch (Exception)
                             {
@@ -1234,6 +1249,13 @@ namespace TWModManager
                     try
                     {
                         File.Move(mod.FilePath, rtw2DataPath + "\\MyMods\\" + mod.Name);
+
+                        string imgPath = Path.ChangeExtension(mod.FilePath, "png");
+
+                        if (File.Exists(imgPath) == true)
+                        {
+                            File.Move(imgPath, rtw2DataPath + "\\MyMods\\" + Path.GetFileName(imgPath));
+                        }
                     }
                     catch(Exception)
                     {
@@ -1353,6 +1375,23 @@ namespace TWModManager
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             WriteSettings();
+        }
+
+        private void steamWorkshopIntegrationBETAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SteamWorkshopIntegration = !SteamWorkshopIntegration;
+
+            if (SteamWorkshopIntegration == true)
+            {
+                FindSubscribedMods();
+                ColourWorkshopPacks();
+                labelWorkshop.Visible = true;
+            }
+            else
+            {
+                DeColourWorkshopPacks();
+                labelWorkshop.Visible = false;
+            }
         }
     }
 }

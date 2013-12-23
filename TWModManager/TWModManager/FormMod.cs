@@ -28,6 +28,8 @@ namespace TWModManager
 
         private void FormMod_Load(object sender, EventArgs e)
         {
+            this.Text += "  [BETA]";
+
             labelName.Text = Path.GetFileName(pack.FilePath);
 
             int i = 0;
@@ -55,6 +57,8 @@ namespace TWModManager
 
             FileInfo fI = new FileInfo(pack.FilePath);
             float fileSize = (float)fI.Length / (float)(1024 * 1024);
+
+            if (fileSize < 0.01) fileSize = 0.01f;
 
             labelDesc.Text = "Filename:\n'" + pack.Name + "'\n"
                 + "Filesize: " + fileSize.ToString("N2") + "mb\n"
@@ -129,6 +133,11 @@ namespace TWModManager
             {
                 labelAuthor.Font = new Font(labelAuthor.Font, FontStyle.Regular);
             }
+        }
+
+        private void pbSteam_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://steamcommunity.com/sharedfiles/filedetails/?id=" + workshop[pmIndex].FileID);
         }
     }
 }

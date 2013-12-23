@@ -70,6 +70,8 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelWorkshop = new System.Windows.Forms.Label();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.steamWorkshopIntegrationBETAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxProfiles.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.groupBoxConvert.SuspendLayout();
@@ -155,7 +157,7 @@
             // 
             this.moveDownButton.Enabled = false;
             this.moveDownButton.Font = new System.Drawing.Font("Wingdings", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveDownButton.Location = new System.Drawing.Point(372, 95);
+            this.moveDownButton.Location = new System.Drawing.Point(372, 97);
             this.moveDownButton.Name = "moveDownButton";
             this.moveDownButton.Size = new System.Drawing.Size(29, 27);
             this.moveDownButton.TabIndex = 14;
@@ -170,7 +172,7 @@
             // 
             this.moveUpButton.Enabled = false;
             this.moveUpButton.Font = new System.Drawing.Font("Wingdings", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.moveUpButton.Location = new System.Drawing.Point(372, 67);
+            this.moveUpButton.Location = new System.Drawing.Point(372, 69);
             this.moveUpButton.Name = "moveUpButton";
             this.moveUpButton.Size = new System.Drawing.Size(29, 27);
             this.moveUpButton.TabIndex = 13;
@@ -273,7 +275,7 @@
             // 
             this.labelOrderInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelOrderInfo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelOrderInfo.Location = new System.Drawing.Point(405, 55);
+            this.labelOrderInfo.Location = new System.Drawing.Point(405, 57);
             this.labelOrderInfo.Name = "labelOrderInfo";
             this.labelOrderInfo.Size = new System.Drawing.Size(186, 79);
             this.labelOrderInfo.TabIndex = 25;
@@ -291,6 +293,7 @@
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.functionsToolStripMenuItem,
+            this.optionsToolStripMenuItem,
             this.informationToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -459,6 +462,22 @@
             this.labelWorkshop.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.labelWorkshop.Visible = false;
             // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.steamWorkshopIntegrationBETAToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // steamWorkshopIntegrationBETAToolStripMenuItem
+            // 
+            this.steamWorkshopIntegrationBETAToolStripMenuItem.CheckOnClick = true;
+            this.steamWorkshopIntegrationBETAToolStripMenuItem.Name = "steamWorkshopIntegrationBETAToolStripMenuItem";
+            this.steamWorkshopIntegrationBETAToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.steamWorkshopIntegrationBETAToolStripMenuItem.Text = "Steam Workshop Integration [BETA]";
+            this.steamWorkshopIntegrationBETAToolStripMenuItem.Click += new System.EventHandler(this.steamWorkshopIntegrationBETAToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -544,6 +563,8 @@
         private System.Windows.Forms.Label labelWorkshop;
         private System.Windows.Forms.ToolStripMenuItem selectGameDirectoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem steamWorkshopIntegrationBETAToolStripMenuItem;
     }
 }
 

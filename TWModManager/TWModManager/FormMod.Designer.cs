@@ -28,12 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMod));
             this.labelName = new System.Windows.Forms.Label();
             this.imgMod = new System.Windows.Forms.PictureBox();
             this.labelAuthor = new System.Windows.Forms.Label();
             this.labelDesc = new System.Windows.Forms.Label();
+            this.pbSteam = new System.Windows.Forms.PictureBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.imgMod)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSteam)).BeginInit();
             this.SuspendLayout();
             // 
             // labelName
@@ -42,7 +46,7 @@
             this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelName.Location = new System.Drawing.Point(12, 8);
             this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(395, 23);
+            this.labelName.Size = new System.Drawing.Size(493, 23);
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Name";
             this.labelName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -61,13 +65,14 @@
             // labelAuthor
             // 
             this.labelAuthor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAuthor.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAuthor.Location = new System.Drawing.Point(178, 38);
             this.labelAuthor.Name = "labelAuthor";
-            this.labelAuthor.Size = new System.Drawing.Size(229, 27);
+            this.labelAuthor.Size = new System.Drawing.Size(327, 27);
             this.labelAuthor.TabIndex = 2;
             this.labelAuthor.Text = "Author";
             this.labelAuthor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.labelAuthor, "Click to view Author\'s Steam page");
             this.labelAuthor.Click += new System.EventHandler(this.labelAuthor_Click);
             this.labelAuthor.MouseEnter += new System.EventHandler(this.labelAuthor_MouseEnter);
             this.labelAuthor.MouseLeave += new System.EventHandler(this.labelAuthor_MouseLeave);
@@ -75,19 +80,33 @@
             // labelDesc
             // 
             this.labelDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDesc.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDesc.Location = new System.Drawing.Point(178, 71);
             this.labelDesc.Name = "labelDesc";
-            this.labelDesc.Size = new System.Drawing.Size(229, 127);
+            this.labelDesc.Size = new System.Drawing.Size(390, 127);
             this.labelDesc.TabIndex = 3;
             this.labelDesc.Text = "Description";
             this.labelDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbSteam
+            // 
+            this.pbSteam.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbSteam.Image = ((System.Drawing.Image)(resources.GetObject("pbSteam.Image")));
+            this.pbSteam.Location = new System.Drawing.Point(511, 8);
+            this.pbSteam.Name = "pbSteam";
+            this.pbSteam.Size = new System.Drawing.Size(57, 57);
+            this.pbSteam.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbSteam.TabIndex = 4;
+            this.pbSteam.TabStop = false;
+            this.toolTip.SetToolTip(this.pbSteam, "Click to view mod\'s Steam Workshop page");
+            this.pbSteam.Click += new System.EventHandler(this.pbSteam_Click);
             // 
             // FormMod
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 208);
+            this.ClientSize = new System.Drawing.Size(580, 209);
+            this.Controls.Add(this.pbSteam);
             this.Controls.Add(this.labelDesc);
             this.Controls.Add(this.labelAuthor);
             this.Controls.Add(this.imgMod);
@@ -100,6 +119,7 @@
             this.Load += new System.EventHandler(this.FormMod_Load);
             this.Shown += new System.EventHandler(this.FormMod_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.imgMod)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSteam)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -110,5 +130,7 @@
         private System.Windows.Forms.PictureBox imgMod;
         private System.Windows.Forms.Label labelAuthor;
         private System.Windows.Forms.Label labelDesc;
+        private System.Windows.Forms.PictureBox pbSteam;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
